@@ -1,0 +1,38 @@
+#keyboard{
+    height: 100px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: stretch;
+}
+
+.key{
+    flex-basis: 0;
+    flex-grow: 1;
+    padding: 0;
+}
+.key>*{
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    font-size: 8pt;
+    transform: translateX(-50%) scaleX(0.7);
+}
+
+.black{
+    z-index: 2;
+    background-color: black;
+    height: 60%;
+}
+
+.C, .F{
+    transform: scaleX(1.7) translateX(17%);
+}
+.E, .B{
+    transform: scaleX(1.7) translateX(-15%);
+}
+.D {
+    transform: scaleX(1.8);
+}
+.A, .G{
+    transform: scaleX(2);
+}

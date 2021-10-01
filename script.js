@@ -4,6 +4,9 @@ const frequencies = [16.35, 17.32, 18.35, 19.45, 20.60, 21.83, 23.12, 24.50, 25.
 
 const ctx = new AudioContext();
 
+var isDown = false;
+addEventListener("mousedown", _=>isDown=true);
+addEventListener("mouseup", _=>isDown=false);
 
 for(let i=0; i<108; i++)
 {
@@ -33,7 +36,11 @@ for(let i=0; i<108; i++)
 
     button.addEventListener("mousedown", _=>key.play());
 
-    button.addEventListener("mouseup", _=>key.stop());
+    button.addEventListener("mouseenter",_=>{if(isDown) key.play()});
+
+    button.addEventListener("mouseleave",_=>key.stop());
+
+    addEventListener("mouseup", _=>key.stop());
     
     keyboard.append(button);
 }

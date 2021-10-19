@@ -45,6 +45,12 @@ for(let i=0; i<108; i++)
     keyboard.append(button);
 }
 
+for(let i=0; i<5; i++)
+{
+    let knob = new GainKnob(ctx);
+    document.querySelector("#controls").append(knob);
+}
+
 
 function Key(context, frequency)
 {

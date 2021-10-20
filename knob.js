@@ -53,8 +53,8 @@ class XKnob extends HTMLElement
 
         let gradient = create("radialGradient",{id: "gradient"});
         gradient.append(
-            create("stop", {offset: "80%", "stop-color": "rgb(150,150,150)"}),
-            create("stop", {offset: "100%", "stop-color": "rgb(200,200,200)"})
+            create("stop", {offset: "80%", "stop-color": "rgb(230,230,230)"}),
+            create("stop", {offset: "100%", "stop-color": "rgb(180,180,180)"})
         );
 
         let circle = create("circle", {cx:"25", cy:"25", r:"25", fill: "url(#gradient)"});

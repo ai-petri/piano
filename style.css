@@ -38,7 +38,7 @@
 }
 
 #controls{
-    background-color: rgb(230,230,230);
+    background-color: rgb(200,200,200);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,4 +47,5 @@
 
 gain-knob{
     margin: 5px;
+    filter: drop-shadow(0px 2px 2px grey);
 }

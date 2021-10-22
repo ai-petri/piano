@@ -8,6 +8,49 @@ var isDown = false;
 addEventListener("mousedown", _=>isDown=true);
 addEventListener("mouseup", _=>isDown=false);
 
+
+var gainKnob = new GainKnob(ctx);
+var stereoPannerKnob = new StereoPannerKnob(ctx);
+
+document.querySelector("#volume").appendChild(gainKnob);
+document.querySelector("#pan").appendChild(stereoPannerKnob);
+gainKnob.connect(stereoPannerKnob.stereoPannerNode);
+
+
+var filters = [];
+
+filters.push(new FilterKnob(ctx,"highpass", 400));
+
+for(let i=0; i<4; i++)
+{
+    let frequency = 1000 + i*1000;
+    filters.push(new FilterKnob(ctx, "peaking", frequency));
+}
+
+filters.push(new FilterKnob(ctx,"lowpass",16000));
+
+for(let i=0; i<filters.length; i++)
+{
+    let div = document.createElement("div");
+    div.className = "knob-container";
+    let label = document.createElement("label");
+    label.innerText = filters[i].filterNode.frequency.value/1000 + " kHz";
+    div.append(label, filters[i]);
+    document.querySelector("#controls").append(div);
+
+
+    if(i<filters.length - 1)
+    {
+        filters[i].connect(filters[i+1].filterNode);
+    }
+}
+
+stereoPannerKnob.connect(filters[0].filterNode);
+filters[filters.length - 1].connect(ctx.destination);
+
+
+
+
 for(let i=0; i<108; i++)
 {
     let button = document.createElement("button");
@@ -32,7 +75,7 @@ for(let i=0; i<108; i++)
 
     let key = new Key(ctx, frequencies[i]);
     
-    key.connect(ctx.destination);
+    key.connect(gainKnob.gainNode);
 
     button.addEventListener("mousedown", _=>key.play());
 
@@ -45,16 +88,12 @@ for(let i=0; i<108; i++)
     keyboard.append(button);
 }
 
-for(let i=0; i<5; i++)
-{
-    let knob = new GainKnob(ctx);
-    document.querySelector("#controls").append(knob);
-}
 
 
 function Key(context, frequency)
 {
     this.osc = context.createOscillator();
+    this.osc.type = "sawtooth";
     this.osc.frequency.value = frequency;
     this.gainNode = context.createGain();
     this.gainNode.gain.value = 0;

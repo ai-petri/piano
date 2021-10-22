@@ -3,6 +3,7 @@ class XKnob extends HTMLElement
     constructor()
     {
         super();
+        this.className = "knob";
     }
 
     isDown = false;
@@ -112,6 +113,7 @@ class GainKnob extends XKnob
     {
         super();
         this.gainNode = context.createGain();
+        this.gainNode.gain.value = 0.5;
     }
 
     /**
@@ -124,8 +126,71 @@ class GainKnob extends XKnob
 
     update(n)
     {
-        this.gainNode.gain.value = n;
+        this.gainNode.gain.value = 0.5 + n;
     }
 }
 
 customElements.define("gain-knob", GainKnob);
+
+class StereoPannerKnob extends XKnob
+{
+    /**
+     * 
+     * @param {AudioContext} context 
+     */
+    constructor(context)
+    {
+        super();
+        this.stereoPannerNode = context.createStereoPanner();
+    }
+
+    /**
+     * 
+     * @param {AudioNode} destination 
+     */
+    connect(destination)
+    {
+        this.stereoPannerNode.connect(destination);
+    }
+
+    update(n)
+    {
+        this.stereoPannerNode.pan.value = n;
+    }
+}
+
+customElements.define("stereo-panner-knob", StereoPannerKnob);
+
+class FilterKnob extends XKnob
+{
+    /**
+     * @param {AudioContext} context
+     * @param {BiquadFilterType} type
+     * @param {Number} frequency
+     */
+    constructor(context, type, frequency)
+    {
+        super();
+        this.filterNode = context.createBiquadFilter();
+        this.filterNode.type = type;
+        this.filterNode.frequency.value = frequency;
+        this.filterNode.Q.value = 0.5;
+    }
+
+    /** 
+     * @param {AudioNode} destination 
+     */
+    connect(destination)
+    {
+        this.filterNode.connect(destination);
+    }
+
+    update(n)
+    {
+        this.filterNode.Q.value = n + 0.5;
+        this.filterNode.gain.value = 40*n;
+        console.log(this.filterNode.Q.value)
+    }
+}
+
+customElements.define("filter-knob", FilterKnob);

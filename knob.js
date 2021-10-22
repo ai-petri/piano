@@ -46,6 +46,12 @@ class XKnob extends HTMLElement
         }    
     }
 
+    handleContextMenu = e =>
+    {
+        e.preventDefault();
+        this.value = 0;
+    }
+
     connectedCallback()
     {
         let shadow = this.attachShadow({mode:"open"});
@@ -79,6 +85,7 @@ class XKnob extends HTMLElement
         })
 
         this.addEventListener("mousedown", this.handleMouseDown);
+        this.addEventListener("contextmenu", this.handleContextMenu);
         addEventListener("mouseup", this.handleMouseUp);
         addEventListener("mousemove", this.handleMouseMove);
 
@@ -96,6 +103,8 @@ class XKnob extends HTMLElement
     }
     disconnectedCallback()
     {
+        this.removeEventListener("mousedown", this.handleMouseDown);
+        this.removeEventListener("contextmenu", this.handleContextMenu);
         removeEventListener("mouseup", this.handleMouseUp);
         removeEventListener("mousemove", this.handleMouseMove);
     }
@@ -189,7 +198,6 @@ class FilterKnob extends XKnob
     {
         this.filterNode.Q.value = n + 0.5;
         this.filterNode.gain.value = 40*n;
-        console.log(this.filterNode.Q.value)
     }
 }
 

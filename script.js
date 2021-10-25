@@ -48,7 +48,9 @@ for(let i=0; i<filters.length; i++)
 stereoPannerKnob.connect(filters[0].filterNode);
 filters[filters.length - 1].connect(ctx.destination);
 
-
+var analyzer = new SpectrumAnalyzer(ctx);
+filters[filters.length - 1].connect(analyzer.analyzerNode);
+document.querySelector("#screen").appendChild(analyzer);
 
 
 for(let i=0; i<108; i++)

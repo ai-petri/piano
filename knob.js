@@ -4,6 +4,9 @@ class XKnob extends HTMLElement
     {
         super();
         this.className = "knob";
+        this.offset = + this.getAttribute("offset") | 0;
+        this.min = this.getAttribute("min");
+        this.max = this.getAttribute("max");
     }
 
     isDown = false;
@@ -11,12 +14,13 @@ class XKnob extends HTMLElement
 
     set value(n)
     {
-        this.rotate((360*n)%360);
+        if((this.min && n<this.min)||(this.max && n>this.max)) return;
+        this.rotate((360*n)%360 + this.offset);
         this.update(n);
     }
     get value()
     {
-       return this.shadowRoot.querySelector("#rect").transform.baseVal[0].angle / 360;
+       return (this.shadowRoot.querySelector("#rect").transform.baseVal[0].angle - this.offset) / 360;
     }
 
     update(){}
@@ -49,7 +53,15 @@ class XKnob extends HTMLElement
     handleContextMenu = e =>
     {
         e.preventDefault();
-        this.value = 0;
+        if(this.getAttribute("value"))
+        {
+            this.value = this.getAttribute("value");
+        }
+        else
+        {
+            this.value = 0;
+        }
+        
     }
 
     connectedCallback()
@@ -67,7 +79,7 @@ class XKnob extends HTMLElement
         let circle = create("circle", {cx:"25", cy:"25", r:"25", fill: "url(#gradient)"});
 
 
-        let rect = create("rect", {id:"rect", x:"24", width:"2", height:"10", fill:"rgb(100,100,100)", transform:"rotate(0,25,25)"});
+        let rect = create("rect", {id:"rect", x:"24", width:"2", height:"10", fill:"rgb(100,100,100)", transform:`rotate(${this.offset},25,25)`});
 
         svg.append(gradient,circle, rect);
         shadow.appendChild(svg);
@@ -88,6 +100,11 @@ class XKnob extends HTMLElement
         this.addEventListener("contextmenu", this.handleContextMenu);
         addEventListener("mouseup", this.handleMouseUp);
         addEventListener("mousemove", this.handleMouseMove);
+
+        if(this.getAttribute("value"))
+        {
+            this.value = this.getAttribute("value");
+        }
 
 
         function create(name, attributes)

@@ -5,6 +5,32 @@
     justify-content: stretch;
 }
 
+#overlay{
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#start_button{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 1px 1px 1px rgb(100,100,100);
+    font-size: 25px;
+
+}
+
+#start_button:active{
+    box-shadow: inset 1px 1px 1px rgb(100,100,100);
+
+}
+
+
 .key{
     flex-basis: 0;
     flex-grow: 1;
